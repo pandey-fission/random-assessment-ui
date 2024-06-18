@@ -1,0 +1,22 @@
+.mcq-header {
+    margin: 2rem 0rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5rem;
+    opacity: 0.8;
+}
+
+.mcq-header h1 {
+    font-size: 5rem;
+}
+
+.mcq-header span {
+    font-size: 1.25rem;
+}
+
+.accordion-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}

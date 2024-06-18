@@ -1,0 +1,52 @@
+body {
+    background: linear-gradient(to bottom, white, rgba(0, 255, 24, 0.1));
+    background-attachment: fixed;
+    height: 100vh;
+}
+
+.background-images {
+    position: relative;
+}
+
+.pdf-icon {
+    position: absolute;
+    top: 20rem;
+    left: 33rem;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+.microsoftwordIcon {
+    position: absolute;
+    top: 31rem;
+    left: 33rem;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+.wordIcon {
+    position: absolute;
+    top: 35rem;
+    left: 35rem;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+.fileIcon {
+    position: absolute;
+    top: 33rem;
+    left: 74rem;
+    width: 6rem;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+.downloadIcon {
+    position: absolute;
+    top: 30rem;
+    left: 77rem;
+    width: 4rem;
+    z-index: -1;
+    opacity: 0.8;
+}
+
