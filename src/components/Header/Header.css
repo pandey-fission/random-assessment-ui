@@ -1,0 +1,11 @@
+.logo-bottom-line {
+    color: white;
+    font-size: 0.6rem;
+}
+
+.logo-container {
+    width: 11rem;
+    margin-left: 5rem;
+    padding: 1rem;
+    align-items: center;
+}
