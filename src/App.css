@@ -10,7 +10,7 @@ body {
 
 .pdf-icon {
     position: absolute;
-    top: 20rem;
+    top: 15rem;
     left: 33rem;
     z-index: -1;
     opacity: 0.8;
@@ -18,7 +18,7 @@ body {
 
 .microsoftwordIcon {
     position: absolute;
-    top: 31rem;
+    top: 26rem;
     left: 33rem;
     z-index: -1;
     opacity: 0.8;
@@ -26,7 +26,7 @@ body {
 
 .wordIcon {
     position: absolute;
-    top: 35rem;
+    top: 30rem;
     left: 35rem;
     z-index: -1;
     opacity: 0.8;
@@ -34,7 +34,7 @@ body {
 
 .fileIcon {
     position: absolute;
-    top: 33rem;
+    top: 28rem;
     left: 74rem;
     width: 6rem;
     z-index: -1;
@@ -43,7 +43,7 @@ body {
 
 .downloadIcon {
     position: absolute;
-    top: 30rem;
+    top: 25rem;
     left: 77rem;
     width: 4rem;
     z-index: -1;

@@ -34,7 +34,7 @@ function Upload(props) {
                         )}
                     </Dropzone>
                     <div className="d-flex justify-content-center">
-                        <Button onClick={() => setFileAttached(true)} variant="dark">Attach Files</Button>
+                        <Button disabled={!file} onClick={() => setFileAttached(true)} variant="dark">Attach Files</Button>
                     </div>
                 </> : <>
                     <div className="d-flex flex-column generate-window h-100">
