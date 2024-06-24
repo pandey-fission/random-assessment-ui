@@ -1,8 +1,7 @@
 .upload {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 80vh;
+    margin-top: -5rem;
 }
 
 .upload-container {
@@ -11,7 +10,8 @@
     border-radius: 3rem;
     margin: 2rem;
     width: 30%;
-    height: 22rem
+    height: 25rem;
+    box-shadow: 2px 2px 15px grey;
 }
 
 .drop-icon {
@@ -22,15 +22,63 @@
 }
 
 .drop-box {
-    border: 1px dashed black;
+    border: dashed 2px black;
+    border-radius: 2rem;
+    height: 100%;
     padding: 1rem;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    border-radius: 2rem;
-    margin: 1rem 0rem;
+    align-items: center;
 }
 
 .generate-window {
     justify-content: center;
     align-items: center;
+}
+
+.background-images {
+    position: relative;
+}
+
+.pdf-icon {
+    position: absolute;
+    top: 0rem;
+    left: 33rem;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+.microsoftwordIcon {
+    position: absolute;
+    top: 10rem;
+    left: 33rem;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+.wordIcon {
+    position: absolute;
+    top: 15rem;
+    left: 35rem;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+.fileIcon {
+    position: absolute;
+    top: 5rem;
+    left: 74rem;
+    width: 6rem;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+.downloadIcon {
+    position: absolute;
+    top: 15rem;
+    left: 77rem;
+    width: 4rem;
+    z-index: -1;
+    opacity: 0.8;
 }

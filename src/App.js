@@ -1,22 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './App.css';
 import Header from './components/Header/Header';
 import Upload from './components/Upload/Upload';
-
-//background Images - Upload
-import pdfIcon from './Assets/file pdf icon.png';
-import microsoftWordIcon from './Assets/Icon simple-microsoftword.png';
-import wordIcon from './Assets/Icon awesome-file-word.png';
-import fileIcon from './Assets/Icon document.png';
-import downloadIcon from './Assets/Icon download.png';
-
-//background Images - Generate
-import messageIcon from './Assets/Icon material-question-answer.png';
-import smallQuestion from './Assets/Icon metro-question.png';
-import boldQuestion from './Assets/Icon awesome-question.png';
-import thinQuestion from './Assets/Icon open-question-mark.png';
-import questionCircle from './Assets/Icon awesome-question-circle.png'
-import MCQs from './components/MCQs/MCQs';
+import MCQs from './components/MCQs/MCQs'
 
 const randomMcqs = [
   {
@@ -121,36 +108,141 @@ const randomMcqs = [
   }
 ]
 
+const second_temp = [
+  {
+    "question": "What is the largest mammal in the world?",
+    "options": [
+      "African Elephant",
+      "Blue Whale",
+      "Great White Shark",
+      "Giraffe"
+    ],
+    "answer": "Blue Whale"
+  },
+  {
+    "question": "Which of the following is known as the fastest land animal?",
+    "options": [
+      "Cheetah",
+      "Lion",
+      "Greyhound",
+      "Horse"
+    ],
+    "answer": "Cheetah"
+  },
+  {
+    "question": "What is the process by which plants make their food using sunlight called?",
+    "options": [
+      "Respiration",
+      "Transpiration",
+      "Photosynthesis",
+      "Digestion"
+    ],
+    "answer": "Photosynthesis"
+  },
+  {
+    "question": "Which of these birds is known for its ability to mimic human speech?",
+    "options": [
+      "Crow",
+      "Sparrow",
+      "Parrot",
+      "Eagle"
+    ],
+    "answer": "Parrot"
+  },
+  {
+    "question": "What is the primary gas found in the Earth's atmosphere?",
+    "options": [
+      "Oxygen",
+      "Carbon Dioxide",
+      "Hydrogen",
+      "Nitrogen"
+    ],
+    "answer": "Nitrogen"
+  },
+  {
+    "question": "Which of the following trees is known for its distinctive fan-shaped leaves?",
+    "options": [
+      "Maple",
+      "Oak",
+      "Ginkgo",
+      "Pine"
+    ],
+    "answer": "Ginkgo"
+  },
+  {
+    "question": "Which ocean is the largest by surface area?",
+    "options": [
+      "Atlantic Ocean",
+      "Indian Ocean",
+      "Southern Ocean",
+      "Pacific Ocean"
+    ],
+    "answer": "Pacific Ocean"
+  },
+  {
+    "question": "What type of ecosystem is characterized by the presence of coniferous forests?",
+    "options": [
+      "Desert",
+      "Savanna",
+      "Taiga",
+      "Tundra"
+    ],
+    "answer": "Taiga"
+  },
+  {
+    "question": "Which plant is known for its rapid growth and ability to grow in harsh conditions?",
+    "options": [
+      "Bamboo",
+      "Cactus",
+      "Oak",
+      "Willow"
+    ],
+    "answer": "Bamboo"
+  },
+  {
+    "question": "Which of these insects is known for its role in pollination?",
+    "options": [
+      "Ant",
+      "Butterfly",
+      "Mosquito",
+      "Termite"
+    ],
+    "answer": "Butterfly"
+  }
+]
 
 function App() {
   const [file, setFile] = useState(null);
-  const [isFileAttached, setFileAttached] = useState(false);
+  const [headerData, setHeaderData] = useState({ title: 'Upload and attach files', subtitle: 'upload and attach files to this project' });
   const [mcqs, setMcqs] = useState([]);
-  const [isLoading, setisLoading] = useState(false);
+  const [files, setFiles] = useState([{ title: 'Construction', size: '110MB', status: 'Uploaded', mcqs: randomMcqs }])
 
-  const handleGetMcqs = () => {
-    setisLoading(true)
-    setTimeout(() => {
-      setMcqs(randomMcqs);
-      setisLoading(false);
-    }, 2000);
+  const uploadAndGenerateMCQs = async (file) => {
+    try {
+      const data = { title: file.path, size: `${Math.ceil(file.size / 1024)}KB`, status: 'Uploading', mcqs: [] }
+      setFiles(prev => [data, ...prev])
+      setFile(null);
+
+      // Uploading
+      // Getting CORS Issue
+      // const response = await axios.post('https://5652-2409-40f0-11d2-5d6b-b1ec-1daa-fa53-bede.ngrok-free.app/upload', { file });
+
+      setTimeout(() => {
+        const responseData = { title: file.path, size: `${Math.ceil(file.size / 1024)}KB`, status: 'Uploaded', mcqs: second_temp }
+        setFiles(prev => [responseData, ...prev.slice(1)])
+      }, 3000)
+    } catch (error) {
+      alert(error)
+    }
   }
 
   return (
     <div className="App">
-      <Header />
-      {mcqs.length > 0 ?
-        <MCQs mcqs={mcqs} /> :
-        <>
-          <div className='background-images'>
-            <img src={isFileAttached ? messageIcon : pdfIcon} alt="pdf-icon" className='pdf-icon' />
-            <img src={isFileAttached ? smallQuestion : microsoftWordIcon} alt="microsoftwordIcon" className='microsoftwordIcon' />
-            <img src={isFileAttached ? boldQuestion : wordIcon} alt="wordIcon" className='wordIcon' />
-            <img src={isFileAttached ? thinQuestion : fileIcon} alt="fileIcon" className='fileIcon' />
-            <img src={isFileAttached ? questionCircle : downloadIcon} alt="downloadIcon" className='downloadIcon' />
-          </div>
-          <Upload file={file} setFile={setFile} isFileAttached={isFileAttached} setFileAttached={setFileAttached} handleGetMcqs={handleGetMcqs} isLoading={isLoading} />
-        </>}
+      <Header title={headerData.title} subtitle={headerData.subtitle} setMcqs={setMcqs} />
+      {!mcqs.length ?
+        <Upload files={files} file={file} setFile={setFile} uploadAndGenerateMCQs={uploadAndGenerateMCQs} setHeaderData={setHeaderData} setMcqs={setMcqs} /> :
+        <MCQs mcqs={mcqs} />
+      }
     </div>
   );
 }

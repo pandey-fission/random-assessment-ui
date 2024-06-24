@@ -1,0 +1,53 @@
+.uploaded-pdfs {
+    margin: 1rem 15rem;
+    box-shadow: 4px 5px 10px grey;
+    display: flex;
+    padding: 0rem 2rem;
+}
+
+.pdf-image {
+    background-color: rgba(128, 128, 128, 0.5);
+    padding: 1rem;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.uploaded-card-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between !important;
+    gap: 2rem
+}
+
+.progress-bar {
+    display: flex;
+    gap: 1rem;
+    flex-direction: row !important;
+    align-items: center;
+}
+
+.progress {
+    width: 20rem;
+}
+
+.progress span {
+    background-color: green;
+    width: 1%;
+}
+
+.animation {
+    animation: loader 500ms forwards;
+}
+
+@keyframes loader {
+    from {
+        width: 1%;
+    }
+    to {
+        width: 100%;
+    }
+}
