@@ -108,109 +108,6 @@ const randomMcqs = [
   }
 ]
 
-const second_temp = [
-  {
-    "question": "What is the largest mammal in the world?",
-    "options": [
-      "African Elephant",
-      "Blue Whale",
-      "Great White Shark",
-      "Giraffe"
-    ],
-    "answer": "Blue Whale"
-  },
-  {
-    "question": "Which of the following is known as the fastest land animal?",
-    "options": [
-      "Cheetah",
-      "Lion",
-      "Greyhound",
-      "Horse"
-    ],
-    "answer": "Cheetah"
-  },
-  {
-    "question": "What is the process by which plants make their food using sunlight called?",
-    "options": [
-      "Respiration",
-      "Transpiration",
-      "Photosynthesis",
-      "Digestion"
-    ],
-    "answer": "Photosynthesis"
-  },
-  {
-    "question": "Which of these birds is known for its ability to mimic human speech?",
-    "options": [
-      "Crow",
-      "Sparrow",
-      "Parrot",
-      "Eagle"
-    ],
-    "answer": "Parrot"
-  },
-  {
-    "question": "What is the primary gas found in the Earth's atmosphere?",
-    "options": [
-      "Oxygen",
-      "Carbon Dioxide",
-      "Hydrogen",
-      "Nitrogen"
-    ],
-    "answer": "Nitrogen"
-  },
-  {
-    "question": "Which of the following trees is known for its distinctive fan-shaped leaves?",
-    "options": [
-      "Maple",
-      "Oak",
-      "Ginkgo",
-      "Pine"
-    ],
-    "answer": "Ginkgo"
-  },
-  {
-    "question": "Which ocean is the largest by surface area?",
-    "options": [
-      "Atlantic Ocean",
-      "Indian Ocean",
-      "Southern Ocean",
-      "Pacific Ocean"
-    ],
-    "answer": "Pacific Ocean"
-  },
-  {
-    "question": "What type of ecosystem is characterized by the presence of coniferous forests?",
-    "options": [
-      "Desert",
-      "Savanna",
-      "Taiga",
-      "Tundra"
-    ],
-    "answer": "Taiga"
-  },
-  {
-    "question": "Which plant is known for its rapid growth and ability to grow in harsh conditions?",
-    "options": [
-      "Bamboo",
-      "Cactus",
-      "Oak",
-      "Willow"
-    ],
-    "answer": "Bamboo"
-  },
-  {
-    "question": "Which of these insects is known for its role in pollination?",
-    "options": [
-      "Ant",
-      "Butterfly",
-      "Mosquito",
-      "Termite"
-    ],
-    "answer": "Butterfly"
-  }
-]
-
 function App() {
   const [file, setFile] = useState(null);
   const [headerData, setHeaderData] = useState({ title: 'Upload and attach files', subtitle: 'upload and attach files to this project' });
@@ -219,23 +116,42 @@ function App() {
 
   const uploadAndGenerateMCQs = async (file) => {
     try {
-      const data = { title: file.path, size: `${Math.ceil(file.size / 1024)}KB`, status: 'Uploading', mcqs: [] }
-      setFiles(prev => [data, ...prev])
+      const data = {
+        title: file.name,
+        size: `${Math.ceil(file.size / 1024)}KB`,
+        status: 'Uploading',
+        mcqs: []
+      };
+      setFiles(prev => [data, ...prev]);
       setFile(null);
 
+      // Create a FormData object to hold the file
+      const formData = new FormData();
+      formData.append('file', file);
+
       // Uploading
-      // Getting CORS Issue
-      // const response = await axios.post('https://5652-2409-40f0-11d2-5d6b-b1ec-1daa-fa53-bede.ngrok-free.app/upload', { file });
+      const response = await axios.post('https://bac6-2409-40f0-11d2-5d6b-c4f5-1dc9-d27-b8df.ngrok-free.app/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
 
-      setTimeout(() => {
-        const responseData = { title: file.path, size: `${Math.ceil(file.size / 1024)}KB`, status: 'Uploaded', mcqs: second_temp }
+      const { mcqs_list } = response?.data;
+      if (mcqs_list) {
+        const responseData = {
+          title: file.name,
+          size: `${Math.ceil(file.size / 1024)}KB`,
+          status: 'Uploaded',
+          mcqs: mcqs_list
+        };
         setFiles(prev => [responseData, ...prev.slice(1)])
-      }, 3000)
+      }
     } catch (error) {
-      alert(error)
+      console.error(error);
+      setFiles(prev => [{ title: file.name, size: `${Math.ceil(file.size / 1024)}KB`, status: 'Failed', mcqs: [] }, ...prev.slice(1)])
     }
-  }
-
+  };
+  
   return (
     <div className="App">
       <Header title={headerData.title} subtitle={headerData.subtitle} setMcqs={setMcqs} />

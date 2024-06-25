@@ -15,34 +15,16 @@ function MCQs(props) {
                         <Accordion.Item eventKey="1" className="py-4">
                             <Accordion.Header><h5>{page + index + 1} {'. '}{mcq.question}</h5></Accordion.Header>
                             <Accordion.Body className="accordion-body">
-                                <Form.Check
-                                    inline
-                                    label={`A. ${mcq.options[0]}`}
-                                    name={mcq.question}
-                                    type={'radio'}
-                                    id={`inline-radio-1`}
-                                />
-                                <Form.Check
-                                    inline
-                                    label={`B. ${mcq.options[1]}`}
-                                    name={mcq.question}
-                                    type={'radio'}
-                                    id={`inline-radio-2`}
-                                />
-                                <Form.Check
-                                    inline
-                                    label={`C. ${mcq.options[2]}`}
-                                    name={mcq.question}
-                                    type={'radio'}
-                                    id={`inline-radio-1`}
-                                />
-                                <Form.Check
-                                    inline
-                                    label={`D. ${mcq.options[3]}`}
-                                    name={mcq.question}
-                                    type={'radio'}
-                                    id={`inline-radio-2`}
-                                />
+                                {mcq.options.map((m, index) => {
+                                    return <Form.Check
+                                        key={index}
+                                        inline
+                                        label={`${m}`}
+                                        name={mcq.question}
+                                        type={'radio'}
+                                        id={`inline-radio-1`}
+                                    />
+                                })}
                                 <div className="py-3">
                                     <Button className="mx-3" variant="dark" onClick={() => setShowAnswer(prev => [...prev, index])}>Show Answer</Button>
                                     {showAnswer.includes(index) && `Answer: ${mcq.answer}`}

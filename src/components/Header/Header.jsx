@@ -5,8 +5,6 @@ import Logo from '../../Assets/logo.png';
 import homeIcon from '../../Assets/home icon.png';
 import userIcon from '../../Assets/user icon.png';
 
-import studyImage from '../../Assets/temp_img.jpg';
-
 function Header(props) {
     const { title, subtitle, setMcqs } = props
     return (
