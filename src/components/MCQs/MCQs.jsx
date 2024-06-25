@@ -34,12 +34,12 @@ function MCQs(props) {
                     </Accordion>
                 })}
                 <div className="d-flex justify-content-end p-3">
-                    <button className="previous-button" disabled={page <= 0} onClick={() => setPage(page - 3)}>{'<< previous'}</button>
+                    <div className="w-25 d-flex flex-column align-items-end">
+                        <button className={`previous-button my-2  w-50 ${page <= 0 ? 'd-none' : ''}`} disabled={page <= 0} onClick={() => setPage(page - 3)}>{'<< previous'}</button>
+                        <Button className="next-button my-2 w-50" disabled={mcqs.slice(page, page + 3).length < 3 || page + 3 === mcqs.length} onClick={() => setPage(page + 3)}>{'Next >>'}</Button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div className="d-flex justify-content-center p-3">
-            <Button className="next-button" disabled={mcqs.slice(page, page + 3).length < 3 || page + 3 === mcqs.length} onClick={() => setPage(page + 3)}>{'Next >>'}</Button>
         </div>
     </>
 }
