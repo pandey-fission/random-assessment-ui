@@ -1,22 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './App.css';
 import Header from './components/Header/Header';
 import Upload from './components/Upload/Upload';
-
-//background Images - Upload
-import pdfIcon from './Assets/file pdf icon.png';
-import microsoftWordIcon from './Assets/Icon simple-microsoftword.png';
-import wordIcon from './Assets/Icon awesome-file-word.png';
-import fileIcon from './Assets/Icon document.png';
-import downloadIcon from './Assets/Icon download.png';
-
-//background Images - Generate
-import messageIcon from './Assets/Icon material-question-answer.png';
-import smallQuestion from './Assets/Icon metro-question.png';
-import boldQuestion from './Assets/Icon awesome-question.png';
-import thinQuestion from './Assets/Icon open-question-mark.png';
-import questionCircle from './Assets/Icon awesome-question-circle.png'
-import MCQs from './components/MCQs/MCQs';
+import MCQs from './components/MCQs/MCQs'
 
 const randomMcqs = [
   {
@@ -121,36 +108,57 @@ const randomMcqs = [
   }
 ]
 
-
 function App() {
   const [file, setFile] = useState(null);
-  const [isFileAttached, setFileAttached] = useState(false);
+  const [headerData, setHeaderData] = useState({ title: 'Upload and attach files', subtitle: 'upload and attach files to this project' });
   const [mcqs, setMcqs] = useState([]);
-  const [isLoading, setisLoading] = useState(false);
+  const [files, setFiles] = useState([{ title: 'Construction', size: '110MB', status: 'Uploaded', mcqs: randomMcqs }])
 
-  const handleGetMcqs = () => {
-    setisLoading(true)
-    setTimeout(() => {
-      setMcqs(randomMcqs);
-      setisLoading(false);
-    }, 2000);
-  }
+  const uploadAndGenerateMCQs = async (file) => {
+    try {
+      const data = {
+        title: file.name,
+        size: `${Math.ceil(file.size / 1024)}KB`,
+        status: 'Uploading',
+        mcqs: []
+      };
+      setFiles(prev => [data, ...prev]);
+      setFile(null);
 
+      // Create a FormData object to hold the file
+      const formData = new FormData();
+      formData.append('file', file);
+
+      // Uploading
+      const response = await axios.post('https://bac6-2409-40f0-11d2-5d6b-c4f5-1dc9-d27-b8df.ngrok-free.app/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      const { mcqs_list } = response?.data;
+      if (mcqs_list) {
+        const responseData = {
+          title: file.name,
+          size: `${Math.ceil(file.size / 1024)}KB`,
+          status: 'Uploaded',
+          mcqs: mcqs_list
+        };
+        setFiles(prev => [responseData, ...prev.slice(1)])
+      }
+    } catch (error) {
+      console.error(error);
+      setFiles(prev => [{ title: file.name, size: `${Math.ceil(file.size / 1024)}KB`, status: 'Failed', mcqs: [] }, ...prev.slice(1)])
+    }
+  };
+  
   return (
     <div className="App">
-      <Header />
-      {mcqs.length > 0 ?
-        <MCQs mcqs={mcqs} /> :
-        <>
-          <div className='background-images'>
-            <img src={isFileAttached ? messageIcon : pdfIcon} alt="pdf-icon" className='pdf-icon' />
-            <img src={isFileAttached ? smallQuestion : microsoftWordIcon} alt="microsoftwordIcon" className='microsoftwordIcon' />
-            <img src={isFileAttached ? boldQuestion : wordIcon} alt="wordIcon" className='wordIcon' />
-            <img src={isFileAttached ? thinQuestion : fileIcon} alt="fileIcon" className='fileIcon' />
-            <img src={isFileAttached ? questionCircle : downloadIcon} alt="downloadIcon" className='downloadIcon' />
-          </div>
-          <Upload file={file} setFile={setFile} isFileAttached={isFileAttached} setFileAttached={setFileAttached} handleGetMcqs={handleGetMcqs} isLoading={isLoading} />
-        </>}
+      <Header title={headerData.title} subtitle={headerData.subtitle} setMcqs={setMcqs} />
+      {!mcqs.length ?
+        <Upload files={files} file={file} setFile={setFile} uploadAndGenerateMCQs={uploadAndGenerateMCQs} setHeaderData={setHeaderData} setMcqs={setMcqs} /> :
+        <MCQs mcqs={mcqs} />
+      }
     </div>
   );
 }
